@@ -1,28 +1,30 @@
 require 'debug'
 
+def get_char_from_range(char_array, char_needle, shift)
+  shift %= char_array.size
+
+  case char_needle
+  when char_array.first..char_array.last
+    char_shift = char_needle + shift
+
+    case char_shift
+    when char_array.first..char_array.last
+      char_shift
+    when -> (ch) {ch > char_array.last}
+      char_shift - char_array.last + char_array.first - 1
+    else 
+      char_array.last + shift + 1
+    end
+  else
+    char_needle
+  end
+end
+
 def encrypt(input, shift)
-  lowercase_letters = ('a'..'z').to_a
-  lowercase_letters_ascii = lowercase_letters.map(&:ord)
+  lowercase_letters = ('a'.ord..'z'.ord).to_a
 
   input.split('').each.with_object('') do |letter, result|
-    letter_ascii = letter.ord
-
-    result <<
-      case letter_ascii
-      when lowercase_letters_ascii.first..lowercase_letters_ascii.last
-        shifted_letter_ascii = letter_ascii + shift
-
-        case shifted_letter_ascii
-        when lowercase_letters_ascii.first..lowercase_letters_ascii.last
-          (letter_ascii + shift).chr
-        when -> (shifted_letter) {shifted_letter > lowercase_letters_ascii.last}
-          shifted_letter_ascii - lowercase_letters_ascii.last + lowercase_letters_ascii.first - 1
-        else 
-          lowercase_letters_ascii.last + shift + 1
-        end
-      else #characters to ignore
-        letter
-      end
+    result << get_char_from_range(lowercase_letters, letter.ord, shift).chr
   end
 end
 
