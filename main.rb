@@ -1,6 +1,6 @@
 require 'debug'
 
-def get_char_from_arr(char_array, char_needle, shift)
+def char_shift(char_array, char_needle, shift)
   shift %= char_array.size
 
   case char_needle
@@ -25,7 +25,7 @@ def caesar_cipher(input, shift)
   uppercase_letters = ('A'.ord..'Z'.ord).to_a
 
   input.split('').map { |letter|
-    char_ascii = get_char_from_arr(lowercase_letters, letter.ord, shift) || get_char_from_arr(uppercase_letters, letter.ord, shift) || letter.ord
+    char_ascii = char_shift(lowercase_letters, letter.ord, shift) || char_shift(uppercase_letters, letter.ord, shift) || letter.ord
 
     char_ascii.chr
   }.join('')
@@ -34,7 +34,6 @@ end
 def ask_text
   print "Enter the text\n>>> "
   text = gets.chomp
-  puts
   text
 end
 
@@ -42,7 +41,6 @@ def ask_shift
   begin
     print "Enter the shift\n>>> "
     shift = gets.chomp
-    p shift.inspect
 
     shift.split('').each {|char|
       raise "err" unless ('0'..'9') === char || ['-', '.'].include?(char)
