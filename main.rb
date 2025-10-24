@@ -15,11 +15,13 @@ def encrypt(input, shift)
         case shifted_letter_ascii
         when lowercase_letters_ascii.first..lowercase_letters_ascii.last
           (letter_ascii + shift).chr
-        when -> (shifted_letter) { shifted_letter > lowercase_letters_ascii.first }
-          shifted_letter_ascii - lowercase_letters_ascii.last
+        when -> (shifted_letter) {shifted_letter > lowercase_letters_ascii.last}
+          shifted_letter_ascii - lowercase_letters_ascii.last + lowercase_letters_ascii.first - 1
         else 
-          lowercase_letters_ascii.last - lowercase_letters_ascii.first - shifted_letter_ascii
+          lowercase_letters_ascii.last + shift + 1
         end
+      else #characters to ignore
+        letter
       end
   end
 end
